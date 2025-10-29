@@ -1,0 +1,37 @@
+# ----------------------------------------------------------------------
+# Dependências do Node (Node Modules)
+# ----------------------------------------------------------------------
+# Pasta que armazena todas as bibliotecas instaladas (npm install)
+/node_modules
+
+# Arquivos de log do npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Arquivos de cache
+.npmrc
+
+# ----------------------------------------------------------------------
+# Arquivos do Playwright
+# ----------------------------------------------------------------------
+# Pasta de resultados de testes do Playwright
+/test-results
+
+# Pasta de relatórios de testes (HTML Report)
+/playwright-report
+
+# Pasta de snapshots (para testes visuais, se usados)
+/snapshots
+
+# Playwright cache dir
+.cache/playwright
+.cache/ms-playwright
+
+# ----------------------------------------------------------------------
+# Arquivos de Sistema Operacional
+# ----------------------------------------------------------------------
+.DS_Store # Mac
+Thumbs.db # Windows

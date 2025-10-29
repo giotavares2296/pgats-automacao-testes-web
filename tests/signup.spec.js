@@ -1,0 +1,37 @@
+import { test, expect } from '@playwright/test';
+
+test('Register User ', async ({ page }) => {
+  await page.goto('/');
+  await expect(page).toHaveTitle(/Automation Exercise/);
+  await page.locator('a[href="/login"]').click();
+  await expect(page.locator('h2:has-text("New User Signup!")')).toBeVisible();
+  await page.locator('input[data-qa="signup-name"]').fill('Giovana Test');
+  const email = `giovana_${Date.now()}@test.com`;
+  await page.locator('input[data-qa="signup-email"]').fill(email);
+  await page.locator('button[data-qa="signup-button"]').click();
+  await expect(page.locator('b:has-text("Enter Account Information")')).toBeVisible();
+  await page.locator('#id_gender2').check();
+  await page.locator('#password').fill('Password123!');
+  await page.locator('#days').selectOption('5');
+  await page.locator('#months').selectOption('5');
+  await page.locator('#years').selectOption('1995');
+  await page.locator('#newsletter').check();
+  await page.locator('#optin').check();
+  await page.locator('#first_name').fill('Giovana');
+  await page.locator('#last_name').fill('Tavares');
+  await page.locator('#company').fill('QA Company');
+  await page.locator('#address1').fill('Rua Teste, 123');
+  await page.locator('#address2').fill('Apto 45');
+  await page.locator('#country').selectOption('Canada');
+  await page.locator('#state').fill('Ontario');
+  await page.locator('#city').fill('Toronto');
+  await page.locator('#zipcode').fill('A1A 1A1');
+  await page.locator('#mobile_number').fill('+5511999999999');
+  await page.locator('button[data-qa="create-account"]').click();
+  await expect(page.locator('b:has-text("Account Created!")')).toBeVisible();
+  await page.locator('a[data-qa="continue-button"]').click();
+  await expect(page.locator('a:has-text("Logged in as Giovana Test")')).toBeVisible();
+  await page.locator('a[href="/delete_account"]').click();
+  await expect(page.locator('b:has-text("Account Deleted!")')).toBeVisible();
+  await page.locator('a[data-qa="continue-button"]').click();
+});
