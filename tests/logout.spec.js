@@ -7,6 +7,5 @@ test('Logout User', async ({ page }) => {
     await expect(page).toHaveTitle(/Automation Exercise/);
     await page.locator('a[href="/logout"]').click();
     await expect(page.locator('h2:has-text("Login to your account")')).toBeVisible();
-
     console.log('Teste "Logout User" executado com sucesso.');
 });
