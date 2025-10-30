@@ -35,7 +35,7 @@ test('Register User', async ({ page }) => {
   await page.locator('a[href="/delete_account"]').click();
   await expect(page.locator('b:has-text("Account Deleted!")')).toBeVisible();
   await page.locator('a[data-qa="continue-button"]').click();
-  console.log('TRegister User" executado com sucesso.');
+  console.log('Teste "Register User" executado com sucesso.');
 });
 
 test('Register User with existing email', async ({ page }) => {
