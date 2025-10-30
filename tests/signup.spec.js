@@ -1,15 +1,20 @@
 import { test, expect } from '@playwright/test';
+import { registerUser } from './utils/register-user';
 
-test('Register User ', async ({ page }) => {
+test('Register User', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/Automation Exercise/);
+
   await page.locator('a[href="/login"]').click();
   await expect(page.locator('h2:has-text("New User Signup!")')).toBeVisible();
+
   await page.locator('input[data-qa="signup-name"]').fill('Giovana Test');
   const email = `giovana_${Date.now()}@test.com`;
   await page.locator('input[data-qa="signup-email"]').fill(email);
   await page.locator('button[data-qa="signup-button"]').click();
+
   await expect(page.locator('b:has-text("Enter Account Information")')).toBeVisible();
+
   await page.locator('#id_gender2').check();
   await page.locator('#password').fill('Password123!');
   await page.locator('#days').selectOption('5');
@@ -27,11 +32,37 @@ test('Register User ', async ({ page }) => {
   await page.locator('#city').fill('Toronto');
   await page.locator('#zipcode').fill('A1A 1A1');
   await page.locator('#mobile_number').fill('+5511999999999');
+
   await page.locator('button[data-qa="create-account"]').click();
   await expect(page.locator('b:has-text("Account Created!")')).toBeVisible();
+
   await page.locator('a[data-qa="continue-button"]').click();
   await expect(page.locator('a:has-text("Logged in as Giovana Test")')).toBeVisible();
+
   await page.locator('a[href="/delete_account"]').click();
   await expect(page.locator('b:has-text("Account Deleted!")')).toBeVisible();
   await page.locator('a[data-qa="continue-button"]').click();
+});
+
+test('Register User with existing email', async ({ page }) => {
+  // Cria um usuário novo (garante que o e-mail exista)
+  const { email } = await registerUser(page);
+
+  // Faz logout para poder tentar cadastrar de novo
+  await page.locator('a[href="/logout"]').click();
+
+  // Volta à página inicial e vai para "Signup / Login"
+  await page.goto('/');
+  await expect(page).toHaveTitle(/Automation Exercise/);
+  await page.locator('a[href="/login"]').click();
+  await expect(page.locator('h2:has-text("New User Signup!")')).toBeVisible();
+
+  // Tenta cadastrar novamente com o mesmo e-mail
+  await page.locator('input[data-qa="signup-name"]').fill('Giovana Existente');
+  await page.locator('input[data-qa="signup-email"]').fill(email);
+  await page.locator('button[data-qa="signup-button"]').click();
+
+  // Verifica mensagem de erro (case-insensitive)
+  const errorMsg = page.locator('p', { hasText: /email address already exist/i });
+  await expect(errorMsg).toBeVisible();
 });
