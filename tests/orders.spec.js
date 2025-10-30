@@ -2,61 +2,53 @@ import { test, expect } from '@playwright/test';
 import { registerUser } from './utils/register-user';
 
 test('Place Order: Register before Checkout', async ({ page }) => {
-  // 1️⃣ Acessa a home
-  await page.goto('/');
-  await expect(page).toHaveTitle(/Automation Exercise/);
+    await page.goto('/');
+    await expect(page).toHaveTitle(/Automation Exercise/);
 
-  // 2️⃣ Cria um usuário antes do teste
-  const user = await registerUser(page);
+    const user = await registerUser(page);
 
-  // 3️⃣ Adiciona produto ao carrinho
-  await page.locator('a[href="/products"]').click();
-  await expect(page.locator('.features_items')).toBeVisible();
+    await page.locator('a[href="/products"]').click();
+    await expect(page.locator('.features_items')).toBeVisible();
 
-  const firstProduct = page.locator('.features_items .col-sm-4').first();
-  await firstProduct.waitFor({ state: 'visible' });
+    const firstProduct = page.locator('.features_items .col-sm-4').first();
+    await firstProduct.waitFor({ state: 'visible' });
 
-  const addToCartButton = firstProduct.locator('a.add-to-cart');
-  await addToCartButton.first().scrollIntoViewIfNeeded();
-  await page.waitForTimeout(800);
-  await addToCartButton.first().click({ force: true });
+    const addToCartButton = firstProduct.locator('a.add-to-cart');
+    await addToCartButton.first().scrollIntoViewIfNeeded();
+    await page.waitForTimeout(800);
+    await addToCartButton.first().click({ force: true });
 
-  // Vai para o carrinho
-  await page.locator('u:has-text("View Cart")').click();
-  await expect(page.locator('li:has-text("Shopping Cart")')).toBeVisible();
+    await page.locator('u:has-text("View Cart")').click();
+    await expect(page.locator('li:has-text("Shopping Cart")')).toBeVisible();
 
-  // Inicia o checkout
-  await page.locator('.btn.btn-default.check_out').click();
-  await expect(page.locator('h2:has-text("Address Details")')).toBeVisible();
+    await page.locator('.btn.btn-default.check_out').click();
+    await expect(page.locator('h2:has-text("Address Details")')).toBeVisible();
 
-  // Adiciona mensagem e finaliza pedido
-  await page.locator('textarea[name="message"]').fill('Por favor, entregar com cuidado.');
-  await page.locator('a:has-text("Place Order")').click();
+    await page.locator('textarea[name="message"]').fill('Por favor, entregar com cuidado.');
+    await page.locator('a:has-text("Place Order")').click();
 
-  // Preenche dados do cartão
-  await page.locator('input[data-qa="name-on-card"]').fill('Giovana QA');
-  await page.locator('input[data-qa="card-number"]').fill('4111111111111111');
-  await page.locator('input[data-qa="cvc"]').fill('123');
-  await page.locator('input[data-qa="expiry-month"]').fill('12');
-  await page.locator('input[data-qa="expiry-year"]').fill('2026');
+    await page.locator('input[data-qa="name-on-card"]').fill('Giovana QA');
+    await page.locator('input[data-qa="card-number"]').fill('4111111111111111');
+    await page.locator('input[data-qa="cvc"]').fill('123');
+    await page.locator('input[data-qa="expiry-month"]').fill('12');
+    await page.locator('input[data-qa="expiry-year"]').fill('2026');
 
-  const payButton = page.locator('button[data-qa="pay-button"]');
-  await payButton.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(1000);
-  await payButton.click({ force: true });
+    const payButton = page.locator('button[data-qa="pay-button"]');
+    await payButton.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1000);
+    await payButton.click({ force: true });
 
-  // Valida mensagem de sucesso real
-  const confirmationMessage = page.locator('p:has-text("Congratulations! Your order has been confirmed!")');
-  await confirmationMessage.waitFor({ state: 'visible', timeout: 15000 });
-  await expect(confirmationMessage).toBeVisible();
+    const confirmationMessage = page.locator('p:has-text("Congratulations! Your order has been confirmed!")');
+    await confirmationMessage.waitFor({ state: 'visible', timeout: 15000 });
+    await expect(confirmationMessage).toBeVisible();
 
-  // Clica em Continue
-  const continueButton = page.locator('a:has-text("Continue")');
-  await continueButton.scrollIntoViewIfNeeded();
-  await continueButton.click({ force: true });
+    const continueButton = page.locator('a:has-text("Continue")');
+    await continueButton.scrollIntoViewIfNeeded();
+    await continueButton.click({ force: true });
 
-  // Exclui conta e confirma
-  await page.locator('a[href="/delete_account"]').click();
-  await expect(page.locator('b:has-text("Account Deleted!")')).toBeVisible({ timeout: 10000 });
-  await page.locator('a[data-qa="continue-button"]').click();
+    await page.locator('a[href="/delete_account"]').click();
+    await expect(page.locator('b:has-text("Account Deleted!")')).toBeVisible({ timeout: 10000 });
+    await page.locator('a[data-qa="continue-button"]').click();
+
+    console.log('Teste "Place Order: Register before Checkout" executado com sucesso.');
 });

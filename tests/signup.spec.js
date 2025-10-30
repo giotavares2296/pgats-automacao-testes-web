@@ -42,27 +42,26 @@ test('Register User', async ({ page }) => {
   await page.locator('a[href="/delete_account"]').click();
   await expect(page.locator('b:has-text("Account Deleted!")')).toBeVisible();
   await page.locator('a[data-qa="continue-button"]').click();
+
+  console.log('TRegister User" executado com sucesso.');
 });
 
 test('Register User with existing email', async ({ page }) => {
-  // Cria um usuário novo (garante que o e-mail exista)
   const { email } = await registerUser(page);
 
-  // Faz logout para poder tentar cadastrar de novo
   await page.locator('a[href="/logout"]').click();
 
-  // Volta à página inicial e vai para "Signup / Login"
   await page.goto('/');
   await expect(page).toHaveTitle(/Automation Exercise/);
   await page.locator('a[href="/login"]').click();
   await expect(page.locator('h2:has-text("New User Signup!")')).toBeVisible();
 
-  // Tenta cadastrar novamente com o mesmo e-mail
   await page.locator('input[data-qa="signup-name"]').fill('Giovana Existente');
   await page.locator('input[data-qa="signup-email"]').fill(email);
   await page.locator('button[data-qa="signup-button"]').click();
 
-  // Verifica mensagem de erro (case-insensitive)
   const errorMsg = page.locator('p', { hasText: /email address already exist/i });
   await expect(errorMsg).toBeVisible();
+
+  console.log('Teste "Register User with existing email" executado com sucesso.');
 });
