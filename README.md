@@ -4,7 +4,7 @@ Repositorio criado para o projeto de conclusão da disciplina de Automação de 
 # Projeto de Testes End-to-End com Playwright
 
 Este projeto contém testes automatizados end-to-end usando o [Playwright](https://playwright.dev/).  
-O objetivo é validar fluxos críticos da aplicação web simulando o comportamento real do usuário.
+O objetivo é validar fluxos da aplicação web Automation Exercise (https://automationexercise.com/)
 
 ---
 
