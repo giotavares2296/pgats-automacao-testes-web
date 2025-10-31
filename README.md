@@ -23,7 +23,7 @@ Antes de iniciar, você precisa ter instalado:
 1. **Clone este repositório:**
 
    ```bash
-   git clone https://github.com/seu-usuario/nome-do-repo.git
+   git clone https://github.com/giotavares2296/pgats-automacao-testes-web.git
    ```
 
 ## Configuração e execução
